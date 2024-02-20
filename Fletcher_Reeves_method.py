@@ -21,7 +21,6 @@ def fletcher_reeves(f, vars, initial_point, max_iterations=1000, tolerance=1e-5)
         x = x + alpha * p
 
         # Step 3: Calculate F(x(k+1)), gradient of F(x(k+1)). 
-        gradient = [sp.diff(f, var) for var in vars]
         gradient_current = np.array([float(g.subs(zip(vars, x))) for g in gradient])
         beta = np.dot(gradient_current, gradient_current) / np.dot(gradient_previous, gradient_previous)
         p = -gradient_current + beta * p
@@ -30,9 +29,9 @@ def fletcher_reeves(f, vars, initial_point, max_iterations=1000, tolerance=1e-5)
 
 
 def polynomial(x):
-    # Define your multivariable polynomial here
-    # Example: f(x, y) = x^2 + y^2
-    return 4*(x[0] - 2)**2 + (x[1] - 6)**2
+    # Define the multivariable polynomial here
+    return 4*(x[0] - 5)**2 + (x[1] - 6)**2
+
 
 if __name__ == "__main__":
     x, y = sp.symbols('x y')
