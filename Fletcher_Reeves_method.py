@@ -34,8 +34,8 @@ def polynomial(x):
 
 
 if __name__ == "__main__":
-    x, y = sp.symbols('x y')
-    vars = [x, y]
+    x1, x2 = sp.symbols('x1 x2')
+    vars = [x1, x2]
     initial_point = np.array([1.0, 1.0])  # Initial point
     extremum = fletcher_reeves(polynomial(vars), vars, initial_point)
     print("Extremum found at:", extremum)
