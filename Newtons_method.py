@@ -28,8 +28,10 @@ def newtons_method(function, variables, initial_guess, tolerance=1e-6, max_itera
         gradient_values = sp.Matrix([g.subs(zip(variables, x_values)) for g in gradient])
         hessian_values = sp.Matrix([[h.subs(zip(variables, x_values)) for h in row] for row in hessian])
         hessian_inv = sp.Matrix(hessian_values).inv()    
-        delta_x = -hessian_inv * gradient_values   
-        x_values = delta_x + x_values
+        delta_x = -hessian_inv * gradient_values
+
+        alpha = 0.5
+        x_values = alpha * delta_x + x_values
         path.append(x_values)      
         
         if all(abs(d) < tolerance for d in delta_x):

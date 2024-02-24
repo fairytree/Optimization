@@ -30,7 +30,7 @@ if __name__ == "__main__":
     
     # #-----question 1a-1 Newton's Method with initial_guess = sp.Matrix([-3.0, -30, -4, -0.1])-----
     # variables = [x1, x2, x3, x4]
-    # initial_guess = sp.Matrix([-3.0, -30, -4, -0.1])
+    # initial_guess = sp.Matrix([-3.0, -30.0, -4.0, -0.1])
     # function = function_1a1
     # extremum, path  = newton.newtons_method(function(variables), variables, initial_guess)
     
