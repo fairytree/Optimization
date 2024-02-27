@@ -1,20 +1,6 @@
 import sympy as sp
 
 def newtons_method(function, variables, initial_guess, tolerance=1e-6, max_iterations=100, print_vars = True):
-    """
-    Newton's method for finding extrema of multivariable polynomials.
-
-    Parameters:
-        function (sympy.Expr): Multivariable polynomial function.
-        variables (list): List of variables in the function.
-        initial_guess (list): Initial guess for the extremum.
-        tolerance (float): Tolerance for convergence.
-        max_iterations (int): Maximum number of iterations.
-
-    Returns:
-        list: Extremum coordinates.
-    """
-    # x = sp.symbols(variables)
     gradient = [sp.diff(function, var) for var in variables]
     hessian = [[sp.diff(g, var2) for var2 in variables] for g in gradient]
     x_values = initial_guess
