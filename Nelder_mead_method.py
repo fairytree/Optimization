@@ -1,6 +1,6 @@
 import numpy as np
 
-def nelder_mead(func, initial_simplex, tol=1e-5, max_iter=500):
+def nelder_mead(func, initial_simplex, tol=1e-10, max_iter=5000):
     num_vertices = len(initial_simplex)
     rho = 1
     chi = 2
@@ -30,13 +30,13 @@ def nelder_mead(func, initial_simplex, tol=1e-5, max_iter=500):
             else:
                 # Shrink
                 simplex = [simplex[0]] + [simplex[0] + sigma * (x - simplex[0]) for x in simplex[1:]]
-        
+
         path.append(simplex[0])
-        # print("simplex[0] is: ", simplex[0])
-        # print("simplex: ", simplex)
-        # print("func(simplex[0]) is: ", func(simplex[0]))
-        # print("func(simplex) is: ", func(simplex))
-        if np.all(np.abs(func(simplex[0]) - func(simplex)) < tol):
+        func_values = [func(x) for x in simplex]
+        # print("simplex: ", simplex)      
+        # print("func_values: ", func_values)
+        if np.max(func_values) - np.min(func_values) < tol:
+            print("break")
             break
 
     return simplex[0], func(simplex[0]), path

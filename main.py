@@ -199,19 +199,19 @@ if __name__ == "__main__":
     # print("Objective function value at extremumn:", best_cost)
 
 
-    # ------Assignment 3 question 3 --------
-    variables = [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10]
-    bounds = np.array([[0.01, 2000], [0.01, 16000], [0.01, 120], [0.01, 5000], [0.01, 2000], [85, 93], [90, 95], [3, 12], [1.2, 4], [145, 162]])
-    innerloop_iterations = 10000
-    outloop_iterations = 100
-    r = 1
-    initial_guess = [500, 5000, 30, 1000, 700, 30, 6.0, 8.0, 0.1, 50.0]
-    search_space_reduction_factor = 0.95
-    function = function_3
-    constraint = constraint_3
-    extremum, best_cost, path = LJ.luus_jaakola_optimize_question3(function, initial_guess, r, bounds, constraint, innerloop_iterations,outloop_iterations, search_space_reduction_factor)
-    print("extremum:", extremum)
-    print("Objective function value at extremumn:", best_cost)
+    # # ------Assignment 3 question 3 --------
+    # variables = [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10]
+    # bounds = np.array([[0.01, 2000], [0.01, 16000], [0.01, 120], [0.01, 5000], [0.01, 2000], [85, 93], [90, 95], [3, 12], [1.2, 4], [145, 162]])
+    # innerloop_iterations = 10000
+    # outloop_iterations = 100
+    # r = 1
+    # initial_guess = [500, 5000, 30, 1000, 700, 30, 6.0, 8.0, 0.1, 50.0]
+    # search_space_reduction_factor = 0.95
+    # function = function_3
+    # constraint = constraint_3
+    # extremum, best_cost, path = LJ.luus_jaakola_optimize_question3(function, initial_guess, r, bounds, constraint, innerloop_iterations,outloop_iterations, search_space_reduction_factor)
+    # print("extremum:", extremum)
+    # print("Objective function value at extremumn:", best_cost)
     
         
     # # ------Assignment 3 question 4 --------
@@ -225,18 +225,18 @@ if __name__ == "__main__":
     # function = modified_objective_4
     # extremum, opt_value, path = NM.nelder_mead(function, initial_simplex)
 
-#    # ------Assignment 3 question 5 --------
-#     variables = [x1, x2, x3, x4]
-#     start_point = np.array([3.0, -1.0, 0.0, 1.0])
-#     step_size = 0.1
-#     point1 = start_point
-#     point2 = start_point + np.array([step_size, 0, 0, 0])
-#     point3 = start_point + np.array([0, step_size, 0, 0])
-#     point4 = start_point + np.array([0, 0, step_size, 0])
-#     point5 = start_point + np.array([0, 0, 0, step_size])
-#     initial_simplex = [point1, point2, point3, point4, point5]
-#     function = modified_objective_5
-#     extremum, opt_value, path = NM.nelder_mead(function, initial_simplex)
+   # ------Assignment 3 question 5 --------
+    variables = [x1, x2, x3, x4]
+    start_point = np.array([3.0, -1.0, 0.0, 1.0])
+    step_size = 0.1
+    point1 = start_point
+    point2 = start_point + np.array([step_size, 0, 0, 0])
+    point3 = start_point + np.array([0, step_size, 0, 0])
+    point4 = start_point + np.array([0, 0, step_size, 0])
+    point5 = start_point + np.array([0, 0, 0, step_size])
+    initial_simplex = [point1, point2, point3, point4, point5]
+    function = modified_objective_5
+    extremum, opt_value, path = NM.nelder_mead(function, initial_simplex)
      
 
     vis.data_table(function, extremum, variables, path)
