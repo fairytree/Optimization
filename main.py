@@ -178,7 +178,7 @@ if __name__ == "__main__":
     # function = function_1
     # constraint_inequal = constraint_1_ineq(initial_guess)  # Adjusted to apply constraints correctly
     # initial_temperature = 10000  # Initial temperature
-    # cooling_rate = 0.90  # Cooling rate
+    # cooling_rate = 0.80  # Cooling rate
     # max_iterations = 1000000  # Maximum number of iterations
     # extremum, best_cost, path = SA.simulated_annealing(function, lambda x: True, constraint_inequal, initial_guess, initial_temperature, cooling_rate, max_iterations)
     # print("best_cost: ", best_cost)
@@ -191,7 +191,7 @@ if __name__ == "__main__":
     # outloop_iterations = 100
     # r = 0.2
     # initial_guess = [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]
-    # search_space_reduction_factor = 0.95
+    # search_space_reduction_factor = 0.90
     # function = function_2
     # constraint = constraint_2
     # extremum, best_cost, path = LJ.luus_jaakola_optimize(function, initial_guess, r, bounds, constraint, innerloop_iterations,outloop_iterations, search_space_reduction_factor)

@@ -46,7 +46,7 @@ def data_table(function, extremum, variables, path):
     # visualize data table
     extremum = sp.Matrix(extremum)
     print("Extremum found at:", extremum.applyfunc(lambda x: round(x, 6)))
-    print("Value of function at extremum: ", round(function(extremum),6))
+    # print("Value of function at extremum: ", round(function(extremum),6))
     print("Each iteration is as follows: ")
     data_list = []
     for i in range(len(path)):
