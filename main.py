@@ -7,6 +7,8 @@ import DFP_method as DFP
 import Simulated_Annealing_method as SA
 import Luus_Jaakola_method as LJ
 import Nelder_mead_method as NM
+import Gauss_Newton_Marquardt_method as GNM
+import matplotlib.pyplot as plt
 import math
 
 # ------Assignment 2--------
@@ -139,8 +141,61 @@ def constraint_5(x):
 def modified_objective_5(x):
     return function_5(x) + constraint_5(x)
 
+# -----------exmampel-----------
+def plot_guess(x_data, y_data, k_opt, message):
+    plt.plot(x_data, y_data, 'ro', markersize=8, label='Data')
+    T = np.linspace(x_data.min(), x_data.max(), 100)
+    Y = k_opt[0]*np.exp(-k_opt[1]*x_data) + k_opt[2]*np.exp(-k_opt[3]*x_data)
+    plt.plot(T, Y, 'b-', label='Fit')
+    plt.xlabel('t')
+    plt.ylabel('y')
+    plt.legend()
+    plt.title(message)
+    print("Optimized parameters:", k_opt)
+# Define the residual function
+def residual_func_example(x_data, y_data, x):
+    return y_data - (x[0]*np.exp(-x[1]*x_data) + x[2]*np.exp(-x[3]*x_data))
+# Define the Jacobian function
+def jacobian_func_example(x_data, y_data, k):
+    J = np.zeros((len(y_data), len(k)))
+    J[:, 0] = -np.exp(-k[1]*x_data)
+    J[:, 1] = k[0]*x_data*np.exp(-k[1]*x_data)
+    J[:, 2] = -np.exp(-k[3]*x_data)
+    J[:, 3] = k[2]*x_data*np.exp(-k[3]*x_data)
+    return J
+
+
+# ------Assignment 4 Part A Problem 1 Model A --------
+# define symbolized function:
+def function_4A1A(k, x):  # k is the decision variables, x is the input symbol
+    # # for model A: 
+    # k[0] = 81.7 * 0.0100
+    # k[1] = 7.89 * 0.0100
+    # k[2] = 53.5 * 0.0100
+    # x[0] = 1.0
+    R = k[1] + (k[1]**2) * (1 + k[2] * x[0])**2 / (2 * k[0] * k[2] * x[0])  
+    val = R - (R**2 - k[1]**2)**0.5
+    print("function_value: ", val)
+    return val
+# Calculate residual values
+def residual_func_4A1A(x_data, y_data, k):
+    function_value = (k[1] + (k[1]**2) * (1 + k[2] * x_data)**2 / (2 * k[0] * k[2] * x_data))  - ((k[1] + (k[1]**2) * (1 + k[2] * x_data)**2 / (2 * k[0] * k[2] * x_data))**2 - k[1]**2)**0.5
+    residual = y_data - function_value
+    return residual
+# Define the Jacobian function
+def jacobian_func_4A1A(x_data, y_data, k):
+    x1 = x_data 
+    k1 = k[0]
+    k2 = k[1]
+    k3 = k[2]
+    J = np.zeros((len(y_data), 3))
+    J[:, 0] =  0.5*k2**2*(k2 + k2**2*(k3*x1 + 1)**2/(2*k1*k3*x1))*(k3*x1 + 1)**2/(k1**2*k3*x1*(-k2**2 + (k2 + k2**2*(k3*x1 + 1)**2/(2*k1*k3*x1))**2)**0.5) - k2**2*(k3*x1 + 1)**2/(2*k1**2*k3*x1)
+    J[:, 1] = -(-1.0*k2 + 0.5*(2 + 2*k2*(k3*x1 + 1)**2/(k1*k3*x1))*(k2 + k2**2*(k3*x1 + 1)**2/(2*k1*k3*x1)))/(-k2**2 + (k2 + k2**2*(k3*x1 + 1)**2/(2*k1*k3*x1))**2)**0.5 + 1 + k2*(k3*x1 + 1)**2/(k1*k3*x1)
+    J[:, 2] = -0.5*(k2 + k2**2*(k3*x1 + 1)**2/(2*k1*k3*x1))*(2*k2**2*(k3*x1 + 1)/(k1*k3) - k2**2*(k3*x1 + 1)**2/(k1*k3**2*x1))/(-k2**2 + (k2 + k2**2*(k3*x1 + 1)**2/(2*k1*k3*x1))**2)**0.5 + k2**2*(k3*x1 + 1)/(k1*k3) - k2**2*(k3*x1 + 1)**2/(2*k1*k3**2*x1)  
+    return J
+
 if __name__ == "__main__":
-    x1, x2, x3, x4, x5, x6, x7, x8, x9, x10 = sp.symbols('x1 x2 x3 x4 x5 x6 x7 x8 x9 x10')
+    x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, k1, k2, k3, y1, f1 = sp.symbols('x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 k1 k2 k3 y1 f1')
     
     # #-----question 1a-1 Newton's Method with initial_guess = sp.Matrix([-3.0, -30, -4, -0.1])-----
     # variables = [x1, x2, x3, x4]
@@ -225,20 +280,51 @@ if __name__ == "__main__":
     # function = modified_objective_4
     # extremum, opt_value, path = NM.nelder_mead(function, initial_simplex)
 
-   # ------Assignment 3 question 5 --------
-    variables = [x1, x2, x3, x4]
-    start_point = np.array([3.0, -1.0, 0.0, 1.0])
-    step_size = 0.1
-    point1 = start_point
-    point2 = start_point + np.array([step_size, 0, 0, 0])
-    point3 = start_point + np.array([0, step_size, 0, 0])
-    point4 = start_point + np.array([0, 0, step_size, 0])
-    point5 = start_point + np.array([0, 0, 0, step_size])
-    initial_simplex = [point1, point2, point3, point4, point5]
-    function = modified_objective_5
-    extremum, opt_value, path = NM.nelder_mead(function, initial_simplex)
-     
+#    # ------Assignment 3 question 5 --------
+#     variables = [x1, x2, x3, x4]
+#     start_point = np.array([3.0, -1.0, 0.0, 1.0])
+#     step_size = 0.1
+#     point1 = start_point
+#     point2 = start_point + np.array([step_size, 0, 0, 0])
+#     point3 = start_point + np.array([0, step_size, 0, 0])
+#     point4 = start_point + np.array([0, 0, step_size, 0])
+#     point5 = start_point + np.array([0, 0, 0, step_size])
+#     initial_simplex = [point1, point2, point3, point4, point5]
+#     function = modified_objective_5
+#     extremum, opt_value, path = NM.nelder_mead(function, initial_simplex)
 
-    vis.data_table(function, extremum, variables, path)
-    vis.plot(function, path, variables)
+
+    # ----------example--------------------
+    x_data = np.linspace(-10, 10, 100)
+    y_true = 2.0 * np.exp(-0.5 * x_data) + 1.5 * np.exp(-0.2 * x_data)
+    np.random.seed(0)
+    y_data = y_true + np.random.normal(0, 0.01, size=x_data.shape)
+    initial_guess = np.array([-1.5, 0.8, 1.2, 0.3])
+    residual_func = residual_func_example
+    jacobian_func = jacobian_func_example
+    k_opt = GNM.gauss_newton_marquardt(initial_guess, x_data, y_data, residual_func, jacobian_func)
+
+    plt.figure()
+    plot_guess(x_data, y_data, initial_guess, "initial guess")
+    plt.figure()
+    plot_guess(x_data, y_data, k_opt, "last Iteration")
+    plt.show()
+    
+#    # ------Assignment 4 Part A Problem 1 --------
+#     variables = sp.Matrix([k1, k2, k3])
+#     x = sp.Matrix([x1])
+#     F = sp.Matrix([function_4A1A(variables, x)])
+#     J_matrix = F.jacobian(variables)
+#     # print(sp.latex(J_matrix))
+#     print(J_matrix)
+#     initial_guess = np.array([70.7 * 0.01, 6.5*0.01, 48.5*0.01])
+#     x_data = np.array([1.0, 7.0, 4.0, 10.0, 14.6, 5.5, 8.5, 3.0, 0.22, 1.0])
+#     y_data = np.array([0.0392, 0.0416, 0.0416, 0.0326, 0.0247, 0.0415, 0.0376, 0.0420, 0.0295, 0.0410])
+#     residual_func = residual_func_4A1A
+#     jacobian_func = jacobian_func_4A1A
+#     k_opt = GNM.gauss_newton_marquardt(initial_guess, x_data, y_data, residual_func, jacobian_func)
+
+
+    # vis.data_table(function, extremum, variables, path)
+    # vis.plot(function, path, variables)
         
