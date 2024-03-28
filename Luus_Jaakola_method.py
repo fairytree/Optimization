@@ -1,16 +1,16 @@
 import numpy as np
 
 # Luus-Jaakola optimization method
-def luus_jaakola_optimize(func, initial_guess, r, bounds, constraints_penalty, innerloop_iterations, outloop_iterations, search_space_reduction_factor):
+def luus_jaakola_optimize(func, initial_guess, r, bounds, constraints_penalty=lambda x: 0, innerloop_iterations=10000, outloop_iterations=100, search_space_reduction_factor=0.9, buffer=0.5):
     dim = len(bounds)
     x_best = initial_guess    
     f_best = func(x_best) + constraints_penalty(x_best)
     path = [initial_guess]
     
-    for i in range (outloop_iterations):    
-        for iteration in range(innerloop_iterations):
+    for i in range(outloop_iterations):    
+        for j in range(innerloop_iterations):
             # Generate new solution within bounds
-            x_new = x_best + (np.random.rand(dim) - 0.5) * r
+            x_new = x_best + (np.random.rand(dim) - buffer) * r
             x_new = np.clip(x_new, bounds[:, 0], bounds[:, 1])  # Ensure x_new is within bounds
             f_new = func(x_new) + constraints_penalty(x_new)
             if f_new < f_best:
@@ -19,9 +19,9 @@ def luus_jaakola_optimize(func, initial_guess, r, bounds, constraints_penalty, i
                 
         # update r
         r = r * search_space_reduction_factor
-        print("r: ", r)
-        print("x_best: ", x_best)
-        i += 1    
+        # print("r: ", r)
+        # print("x_best: ", x_best)
+          
     return x_best, f_best, path
 
 

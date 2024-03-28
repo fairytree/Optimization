@@ -2,12 +2,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sympy as sp
 import tabulate as tab
+from colorama import Fore
 
-
+def plot_guess(x_data, y_data, k_opt, message):
+    plt.plot(x_data, y_data, 'ro', markersize=8, label='Data')
+    T = np.linspace(x_data.min(), x_data.max(), 100)
+    Y = k_opt[0]*np.exp(-k_opt[1]*x_data) + k_opt[2]*np.exp(-k_opt[3]*x_data)
+    plt.plot(T, Y, 'b-', label='Fit')
+    plt.xlabel('t')
+    plt.ylabel('y')
+    plt.legend()
+    plt.title(message)
+    print("Optimized parameters:", k_opt)
+    
 def plot(func, path, variables):
     if len(variables) > 2:
-        print("len(variables): ", len(variables), ", cannot plot 3D figure")
-        return None
+        raise ValueError(f"Number of variables is greater than 2 (len(variables) = {len(variables)}), cannot plot 3D figure")
+    if len(variables) == 1:
+        raise NotImplementedError(f"Plotting for single variable functions is not yet implemented")
     buffer = 1
     grid = [100, 100]
     path_x = []
@@ -43,22 +55,27 @@ def plot(func, path, variables):
 
 
 def data_table(function, extremum, variables, path):
-    # visualize data table
-    extremum = sp.Matrix(extremum)
-    print("Extremum found at:", extremum.applyfunc(lambda x: round(x, 6)))
-    # print("Value of function at extremum: ", round(function(extremum),6))
-    print("Each iteration is as follows: ")
+    # visualize as data table
+    if extremum is not None:
+        extremum = sp.Matrix(extremum)
+        print("Extremum found at:", extremum.applyfunc(lambda x: round(x, ndigits=6)))
+        print("Value of function at extremum: ", round(function(extremum), ndigits=6))
+    print(Fore.RED + "Iterations" + Fore.RESET)
     data_list = []
     for i in range(len(path)):
         data = []
         data.append(i+1)
         for j in range(len(variables)):
-            data.append(round(path[i][j],6))
-        data.append(round(function(path[i]),6))
+            data.append(round(path[i][j], ndigits=6))
+        data.append(round(function(path[i]), ndigits=6))
         data_list.append(data)
     
     variable_list = ["Iteration"]
     for i in range(len(variables)):
         variable_list.append(variables[i])
-    variable_list.append('f(x)')    
-    print(tab.tabulate([variable_list] + data_list, tablefmt="simple_grid", numalign="center"))
+    variable_list.append('f(x)')
+    if len(data_list) > 35:   
+        print(tab.tabulate([variable_list] + data_list[:30] + [len(data_list[0]) * ["⋮"]] + data_list[-5:-1], tablefmt="simple", numalign="left", stralign="center", headers="firstrow"))
+    else:
+        print(tab.tabulate([variable_list] + data_list, tablefmt="simple", numalign="left", stralign="center", headers="firstrow"))
+    print(Fore.RED + "^" + Fore.RESET)
